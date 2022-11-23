@@ -1,0 +1,72 @@
+.a_nav{
+    background-color:rgb(177, 116, 164);
+    color: black;
+    border-radius: 5px;
+    margin: 5px;
+    font-size: x-large;
+    text-align: center;
+}
+.title_h{
+    display: grid;
+    grid-template-columns: 2fr 6fr 2fr;
+    text-align: center;
+    align-items: center;
+
+}
+.a_title{
+    text-align: center
+}
+/*main{
+    margin-left: 120px;
+    margin-right: 120px;
+}
+.categor_c{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 6fr;
+    margin: 100px;
+}*/
+
+.chex_c{
+    display: grid;
+    grid-template-columns: 7fr 3fr;
+}
+.btn_search{
+    background-color: aqua;
+    color: black;
+    border-radius: 5px;
+}
+.cont{
+    display: grid;
+    grid-template-columns:5fr 5fr;
+    align-items: center;
+    margin:100px;
+    background-color: blueviolet;
+}
+.cont_title{
+    background-color: antiquewhite;
+    text-align: center;
+margin: 50px;
+}
+.cont_img{
+    background-color:aquamarine;
+text-align: center;
+margin: 15px;
+
+}
+.cont_img img{
+    margin: 50px;
+}
+.f_footer{
+    display: grid;
+    grid-template-columns: 5fr 5fr;
+    text-align: center;
+    position:static;
+}
+.form_c{
+    margin-left: 200px;
+    margin-right: 200px;
+}
+.input_s{
+    align-content: center;
+    text-align: center;
+}
