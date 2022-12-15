@@ -669,7 +669,6 @@ let raceCategoryPast = [];
 
 let arrayCategoryPast = [];
 
-let byCategories =[];
 
 const porcentajesPast = [];
 
@@ -730,10 +729,6 @@ function eventsstatistics(data){
 
   console.log(porcetaje);
   
-
-
-
-
   for (let i = 0; i < porcetaje; i++) {
     
       main += `
@@ -753,71 +748,73 @@ let arrayCategoryUpcoming = [];
 
 
 
-//Separa por categoria
-const separarByCategoryUp = () => {
 
-    const categoryMuseum = EventsUp.filter(upcomingEvents => upcomingEvents.category === "Museum");
-    const categoryCostumeParty = EventsUp.filter(upcomingEvents => upcomingEvents.category === "Costume Party");
-    const categoryMusicConcert = EventsUp.filter(upcomingEvents => upcomingEvents.category === "Music Concert");
-    const categoryBookExchange = EventsUp.filter(upcomingEvents => upcomingEvents.category === "Book Exchange");
-    const categoryCinema = EventsUp.filter(upcomingEvents => upcomingEvents.category === "Cinema");
-    const categoryRace = EventsUp.filter(upcomingEvents => upcomingEvents.category === "Race");
-    
-    museumCategoryUpcoming.push(categoryMuseum);
-    costumeCategoryUpcoming.push(categoryCostumeParty);
-    musicCategoryUpcoming.push(categoryMusicConcert);
-    bookCategoryUpcoming.push(categoryBookExchange);
-    cinemaCategoryUpcoming.push(categoryCinema);
-    raceCategoryUpcoming.push(categoryRace);
-    
-}
+//Utilice una propiedad para crear un objeto nuevo hasOwnProperty la cual me dio problemas para caluclar la longitud
+let nuevoObjeto = {}
+data.events.forEach( x => {
 
-const separarByCategoryPast = () => {
-
-  const categoryMuseum = eventsPast.filter(pastEvents => pastEvents.category === "Museum");
-  const categoryCostumeParty = eventsPast.filter(pastEvents => pastEvents.category === "Costume Party");
-      const categoryFoodFair = eventsPast.filter(pastEvents => pastEvents.category === "Food Fair");
-      const categoryBookExchange = eventsPast.filter(pastEvents => pastEvents.category === "Book Exchange");
-      const categoryCinema = eventsPast.filter(pastEvents => pastEvents.category === "Cinema");
-      const categoryRace = eventsPast.filter(pastEvents => pastEvents.category === "Race");
-      
-      museumCategoryPast.push(categoryMuseum);
-      costumeCategoryPast.push(categoryCostumeParty);
-      foodCategoryPast.push(categoryFoodFair);
-      bookCategoryPast.push(categoryBookExchange);
-      cinemaCategoryPast.push(categoryCinema);
-      raceCategoryPast.push(categoryRace);
-      
-  }
-
-byCategories.from([museumCategoryUpcoming,costumeCategoryUpcoming,musicCategoryUpcoming,bookCategoryUpcoming,cinemaCategoryUpcoming,raceCategoryUpcoming],x=>x+x);
-
-
-
-console.log(byCategories);
-
-  
-  function upEventsStactics(data){
-    let main = "";
-  
-    const cardup = document.getElementById("upstatistics");
-    console.log(cardup);
-
-  
-    for (let i = 0; i < byCategories.length; i++) {
-      
-        main += `
-        <tr>
-        <td>${byCategories[i]}%</td>
-        <td>${Men10Porciento[i]}%</td>
-        <td></td>
-        </tr>
-        `;
-        cardup.innerHTML = main;
-      
+  if( !nuevoObjeto.hasOwnProperty(x.category)){
+    nuevoObjeto[x.category] = {
+      eventos: []
     }
   }
   
+    nuevoObjeto[x.category].eventos.push({
+      nombre: x.name,
+      date: x.date
+    })
+  
+})
+
+
+console.log(nuevoObjeto);
+console.log(Object.keys(nuevoObjeto).length);
+
+
+
+
+function upStatisticsByCategory(nuevoObjeto,data){
+    let main = "";
+    
+    const cardup = document.getElementById("upstatistics");
+    console.log(cardup);
+ 
+
+    for(let i=0;i<Object.keys(nuevoObjeto).length;i++){
+        
+      main+=`
+         <tr>
+      <td>${Object.keys(nuevoObjeto)[i]}</td>
+      <td></td>
+      <td></td>
+      </tr>
+    `;
+        
+    cardup.innerHTML=main;
+  }
+}
+
+
+function PastStatisticsByCategory(nuevoObjeto,data){
+    let main = "";
+    
+    const cardup = document.getElementById("paststatistics");
+    console.log(cardup);
+ 
+
+    for(let i=0;i<Object.keys(nuevoObjeto).length;i++){
+        
+      main+=`
+         <tr>
+      <td>${Object.keys(nuevoObjeto)[i]}</td>
+      <td></td>
+      <td></td>
+      </tr>
+    `;
+        
+    cardup.innerHTML=main;
+  }
+}
 
 
 
@@ -832,11 +829,27 @@ console.log(byCategories);
 
 
 
-  separarByCategoryUp()
-  separarByCategoryPast()
+
+
+  upStatisticsByCategory(nuevoObjeto,data);
+
+
+  PastStatisticsByCategory(nuevoObjeto,data);
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   eventsstatistics(data);
-  upEventsStactics(data);
 
 
 
