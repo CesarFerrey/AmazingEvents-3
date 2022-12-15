@@ -194,7 +194,7 @@ function cardsDom(data) {
          
           <div>
             <h6>Lorem.</h6>      
-            <a href="#" class="btn btn-primary" id=${data.eventos[i].name}>Go somewhere</a>
+            <a href="./pages/details.html?name=${data.eventos[i].name}" class="btn btn-primary" >Go somewhere</a>
           </div>        
           </div>
       </div>
@@ -275,20 +275,22 @@ cards_category();
 const inputSearch = document.getElementById("input-search");
 
 const eventListItems = document.querySelectorAll(".event_list");
-console.log("eventlistItems", eventListItems);
+console.log("eventlistItems", eventListItems); 
 
 inputSearch.addEventListener("keyup",(event)=>{
-
   console.log("event.target.value", event.target.value); // Devuelve contenido del input
 
   eventListItems.forEach((eventItem) => {
+
     eventItem.textContent
     .toLowerCase()
     .includes(event.target.value.toLowerCase())
     ? eventItem.classList.remove("d-none")
     : eventItem.classList.add("d-none");
+   
   })
 
+ 
 
 })
 

@@ -177,7 +177,7 @@ const data={
          
           <div>
             <h6>Lorem.</h6>      
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+            <a href="./details.html?name=${data.eventos[i].name}" class="btn btn-primary" >Go somewhere</a>
           </div>        
           </div>
       </div>
