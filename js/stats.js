@@ -649,87 +649,144 @@ const data =
       }
   ]
 }
+//Separamos eventos futuros
+const eventsUp= data.events.filter(event=>data.currentDate<=event.date);
+console.log(eventsUp)
+
+//Filtramos por categoria los eventos futuros
+const categoriesUp = eventsUp.map((event) => event.category);
+const filter_category_Upcoming = categoriesUp.filter(
+    (value, index) => categoriesUp.indexOf(value) === index
+  );
+  console.log(filter_category_Upcoming)
+//funcion para renderizar y calcular la ganacia y porcentaje 
+  function upStatisticsByCategory(){
+    let main = "";
+    
+    const cardup = document.getElementById("upstatistics"); 
+
+    for(let i=0;i<filter_category_Upcoming.length;i++){
+
+        bycategory=eventsUp.filter(event => event.category===filter_category_Upcoming[i]);
+
+    let revenues=[];
+    bycategory.map((event) => {
+        const Ganancia= event.price* parseInt(event.estimate);
+    revenues.push(Ganancia)
+    });
+    let totalEstimate = revenues.reduce((a, b) => a + b, 0);
+
+let porcentaje=[];
+bycategory.map((event)=>{
+    const Porcentaje= parseInt(event.estimate)*event.capacity/100;
+    porcentaje.push(Porcentaje)
+})
+let porcentajeAssi=porcentaje.reduce((a, b) => a + b, 0);
+
+      main+=`
+         <tr>
+      <td>${filter_category_Upcoming[i]}</td>
+      <td>$${totalEstimate}</td>
+      <td>${porcentajeAssi}%</td>
+      </tr>
+    `;
+    
+    cardup.innerHTML=main;
+
+}
+}
+
+
+//Separamos eventos pasados
+const eventsPast= data.events.filter(event=>data.currentDate>=event.date);
+console.log(eventsPast)
+
+//Categorias de eventos pasados
+const categoriesPast = eventsUp.map((event) => event.category);
+const filter_category_Past = categoriesPast.filter(
+    (value, index) => categoriesPast.indexOf(value) === index
+  );
+  
+  //funcion para renderizar y calcular la ganacia y porcentaje 
+
+  function pastStatisticsByCategory(){
+    let main = "";
+    
+    const cardup = document.getElementById("paststatistics");
+   
+
+    for(let i=0;i<filter_category_Past.length;i++){
+
+        bycategoryPast=eventsPast.filter(event => event.category===filter_category_Past[i]);
+
+
+    let revenuesPast=[];
+    bycategoryPast.map((event) => {
+        const Ganancia= event.price* parseInt(event.assistance);
+        revenuesPast.push(Ganancia)
+    });
+    let totalEstimatePast = revenuesPast.reduce((a, b) => a + b, 0);
+
+
+let porcentaje=[];
+bycategoryPast.map((event)=>{
+    const Porcentaje= parseInt(event.assistance)*event.capacity/100;
+    porcentaje.push(Porcentaje)
+})
+let porcentajeAssi=porcentaje.reduce((a, b) => a + b, 0);
+
+      main+=`
+         <tr>
+      <td>${filter_category_Upcoming[i]}</td>
+      <td>$${totalEstimatePast}</td>
+      <td>${porcentajeAssi}%</td>
+      </tr>
+    `;
+    
+    cardup.innerHTML=main;
+
+}
+}
+
+
+
+//Events Statics
 
 let array = [...data.events];
 
-const eventsPast = [];
-const EventsUp = [];
-let museumCategoryUpcoming = [];
-let bookCategoryUpcoming = [];
-let musicCategoryUpcoming = [];
-let cinemaCategoryUpcoming = [];
-let costumeCategoryUpcoming = [];
-let raceCategoryUpcoming = [];
-let museumCategoryPast = [];
-let bookCategoryPast = [];
-let foodCategoryPast = [];
-let cinemaCategoryPast = [];
-let costumeCategoryPast = [];
-let raceCategoryPast = [];
-
-let arrayCategoryPast = [];
-
-
-const porcentajesPast = [];
-
-
-const currentDate = data.currentDate; // 2022-01-01
-const currentDateSplit = currentDate.split("-"); // ['2022', '01', '01']
-const currentDateTimestamp = new Date (currentDateSplit[0], currentDateSplit[1]-1, currentDateSplit[2]).getTime();
-  
-data.events.map((event) => {
-      const dateToCompare = event.date;
-      const dateToCompareSplit = dateToCompare.split("-");
-      const dateToCompareTimestamp = new Date (dateToCompareSplit[0], dateToCompareSplit[1]-1, dateToCompareSplit[2]).getTime();
-  
-      if (dateToCompareTimestamp <= currentDateTimestamp) {
-        eventsPast.push(event);
-        } else {
-          EventsUp.push(event);
-        }
-})
-
+let porcentajes=[];
 
 const resOrdenados = array.sort((a,b) =>
      a.capacity - b.capacity
 );
+console.log(resOrdenados)
 
+const diezporciento = Math.round(resOrdenados.length * 0.1)
+console.log(diezporciento)
+resOrdenados.forEach((event)=>{
+    let assistance=event.assistance||event.estimate
+  let percentageForAssistance = Math.round((assistance * 100) / event.capacity);
 
-const diezporciento = resOrdenados.length - Math.round(resOrdenados.length * 0.1)
-
-let arrayMayCap = resOrdenados.slice(resOrdenados.length - Math.round(resOrdenados.length * 0.1), resOrdenados.length);
-
-
-
-
-eventsPast.forEach((event)=>{
-  let percentageForAssistance = Math.round((event.assistance * 100) / event.capacity);
-
-  porcentajesPast.push(percentageForAssistance);
+  porcentajes.push(percentageForAssistance);
 })
+console.log(porcentajes)
 
-
-const resultsAssistance = porcentajesPast.sort((a,b) =>
+const resultsAssistance = porcentajes.sort((a,b) =>
   a - b
 );
-
-
 const Men10Porciento = resultsAssistance.slice(0, array.length * 0.1)
-
 const may10Porciento = resultsAssistance.reverse().slice(0, array.length * 0.1)
+let arrayMayCap = resOrdenados.slice(resOrdenados.length - Math.round(resOrdenados.length * 0.1), resOrdenados.length);
 
-function eventsstatistics(data){
+console.log(may10Porciento)
+
+function eventsstatistics(){
   let main = "";
 
-  const cardup = document.getElementById("stats");
+  const cardup = document.getElementById("stats_Porcentaje");
   console.log(cardup);
-
-
-  let porcetaje= data.events.length*(10/100);
-
-  console.log(porcetaje);
   
-  for (let i = 0; i < porcetaje; i++) {
+  for (let i = 0; i < diezporciento; i++) {
     
       main += `
       <tr>
@@ -739,145 +796,17 @@ function eventsstatistics(data){
       </tr>
       `;
       cardup.innerHTML = main;
-    
+
   }
+
 }
 
+upStatisticsByCategory()
 
-let arrayCategoryUpcoming = [];
 
+pastStatisticsByCategory()
 
-
-
-//Utilice una propiedad para crear un objeto nuevo hasOwnProperty la cual me dio problemas para caluclar la longitud
-let nuevoObjeto = {}
-data.events.forEach( x => {
-
-  if( !nuevoObjeto.hasOwnProperty(x.category)){
-    nuevoObjeto[x.category] = {
-      eventos: []
-    }
-  }
-  
-    nuevoObjeto[x.category].eventos.push({
-      nombre: x.name,
-      date: x.date
-    })
-  
-})
-
-
-console.log(nuevoObjeto);
-console.log(Object.keys(nuevoObjeto).length);
-
-
-
-
-function upStatisticsByCategory(nuevoObjeto,data){
-    let main = "";
-    
-    const cardup = document.getElementById("upstatistics");
-    console.log(cardup);
- 
-
-    for(let i=0;i<Object.keys(nuevoObjeto).length;i++){
-        
-      main+=`
-         <tr>
-      <td>${Object.keys(nuevoObjeto)[i]}</td>
-      <td></td>
-      <td></td>
-      </tr>
-    `;
-        
-    cardup.innerHTML=main;
-  }
-}
-
-
-function PastStatisticsByCategory(nuevoObjeto,data){
-    let main = "";
-    
-    const cardup = document.getElementById("paststatistics");
-    console.log(cardup);
- 
-
-    for(let i=0;i<Object.keys(nuevoObjeto).length;i++){
-        
-      main+=`
-         <tr>
-      <td>${Object.keys(nuevoObjeto)[i]}</td>
-      <td></td>
-      <td></td>
-      </tr>
-    `;
-        
-    cardup.innerHTML=main;
-  }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  upStatisticsByCategory(nuevoObjeto,data);
-
-
-  PastStatisticsByCategory(nuevoObjeto,data);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  eventsstatistics(data);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+eventsstatistics()
 
 
 
